@@ -72,7 +72,26 @@ async function startServer() {
   if (!isProduction) {
     const { createServer: createViteServer } = await import('vite');
     const vite = await createViteServer({
-      server: { middlewareMode: true },
+      server: {
+        middlewareMode: true,
+        hmr: false,
+        ws: false,
+        watch: null,
+      },
+      plugins: [
+        {
+          name: 'oflink-disable-hmr-websocket',
+          enforce: 'post',
+          transform(code, id) {
+            if (id.includes('vite/dist/client/client.mjs')) {
+              return code.replace(
+                'const createWebSocketModuleRunnerTransport = (options) => {',
+                'const createWebSocketModuleRunnerTransport = () => ({ async connect() {}, async disconnect() {}, send() {} }); const _unusedCreateWebSocketModuleRunnerTransport = (options) => {'
+              );
+            }
+          },
+        },
+      ],
       appType: 'spa',
     });
     app.use(vite.middlewares);
