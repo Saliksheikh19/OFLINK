@@ -1,0 +1,6 @@
+{
+  "name": "OFLINK",
+  "description": "Offline infrastructure-independent communication system over ESP32 and SX1262 LoRa via Bluetooth Low Energy",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
